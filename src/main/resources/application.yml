@@ -1,0 +1,56 @@
+spring:
+  datasource:
+    druid:
+      url: jdbc:log4jdbc:mysql://localhost:3306/oc?useUnicode=true&characterEncoding=UTF-8
+      username: xukj
+      password: 123456
+      driver-class-name: net.sf.log4jdbc.DriverSpy
+      minIdle: 5
+      validationQuery: SELECT 1 FROM DUAL
+      initialSize: 5
+      maxWait: 60000
+      test-on-borrow: false
+      test-on-return: false
+      test-while-idle: true
+      time-between-eviction-runs-millis: 60000
+      max-pool-prepared-statement-per-connection-size: 20
+      pool-prepared-statements: true
+      max-active: 20
+      min-evictable-idle-time-millis: 300000
+#      druid监控
+      web-stat-filter:
+        url-pattern: /*
+        session-stat-enable: false
+        exclusions: "*.js,*.gif,*.jpg,*.png,*.css,*.ico,/druid/*"
+        profile-enable: true
+      stat-view-servlet:
+        url-pattern: /druid/*
+        login-password: 123456
+        reset-enable: false
+        login-username: xukj
+        enabled: true
+      aop-patterns: com.bonc.staff.service.*
+  http:
+    encoding:
+      charset: UTF-8
+      force: true
+      enabled: true
+  messages:
+    encoding: UTF-8
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+  profiles:
+    active: dev
+server:
+  address: 127.0.0.1
+  tomcat:
+    uri-encoding: UTF-8
+  port: 8081
+
+logging:
+  level:
+    org:
+      springframework:
+        data: DEBUG
