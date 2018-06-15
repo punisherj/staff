@@ -2,6 +2,7 @@ package com.bonc.staff.service;
 
 import com.alibaba.fastjson.JSONObject;
 import com.bonc.staff.config.CookieConfig;
+import com.bonc.staff.exception.BusinessException;
 import org.apache.http.HttpEntity;
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
@@ -29,6 +30,7 @@ import java.util.Map;
 public class HttpServiceImpl implements HttpService {
     private static final int SUCCESS = 200;
     private static final int MULTIPLE_CHOICES = 300;
+    private static final int COOKIE_INVALID = 302;
 
     @Autowired
     private CookieConfig cookieConfig;
@@ -52,8 +54,10 @@ public class HttpServiceImpl implements HttpService {
             if (status >= SUCCESS && status < MULTIPLE_CHOICES) {
                 HttpEntity entity = response.getEntity();
                 return entity != null ? EntityUtils.toString(entity) : null;
-            } else {
-                throw new ClientProtocolException("不可处理的状态码" + status);
+            }
+
+            if(status == COOKIE_INVALID) {
+                throw new BusinessException("cookie 失效");
             }
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
@@ -87,12 +91,13 @@ public class HttpServiceImpl implements HttpService {
             if (status >= SUCCESS && status < MULTIPLE_CHOICES) {
                 HttpEntity entity = response.getEntity();
                 return entity != null ? EntityUtils.toString(entity) : null;
-            } else {
-                throw new ClientProtocolException("不可处理的状态码" + status);
             }
+
+            if(status == COOKIE_INVALID) {
+                throw new BusinessException("cookie 失效");
+            }
+
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        } catch (ClientProtocolException e) {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
