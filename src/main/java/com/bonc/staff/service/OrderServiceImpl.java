@@ -13,7 +13,7 @@ import java.util.Map;
  * @author xukj
  */
 @Service
-public class OrderServiceImpl implements OrderService{
+public class OrderServiceImpl implements OrderService {
     @Autowired
     private HttpService httpService;
     @Override
